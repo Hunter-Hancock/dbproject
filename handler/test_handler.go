@@ -1,10 +1,11 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Hunter-Hancock/dbproject/db"
-	home "github.com/Hunter-Hancock/dbproject/view/home"
+	"github.com/Hunter-Hancock/dbproject/view/home"
 )
 
 type TestHandler struct {
@@ -20,7 +21,8 @@ func (t TestHandler) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (t TestHandler) Click(w http.ResponseWriter, r *http.Request) {
-	home.Message("HTMX is working :)").Render(r.Context(), w)
+	fmt.Println("we here")
+	http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }
 
 // func (t TestHandler) Test(w http.ResponseWriter, r *http.Request) {

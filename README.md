@@ -1,9 +1,4 @@
-# Go + HTMX + Tailwind Template 
+# dbproject
 
 # Purpose
-This is a template for creating web apps with Go, HTMX, and Tailwind
-
-# Usage
-
-Create .env file
-
+This is a project for CS 488 Database Systems using Golang + HTMX to interact with a SQL Server Database
