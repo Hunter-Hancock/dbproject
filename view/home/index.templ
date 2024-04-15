@@ -1,0 +1,27 @@
+package home
+
+templ IndexPage() {
+	<html lang="en">
+		<head>
+			<title>Go + HTMX + Tailwind</title>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width-device-width, initial-scale=1"/>
+			<link rel="stylesheet" href="/assets/css/styles.css"/>
+			<script src="/assets/js/htmx.min.js"></script>
+		</head>
+		<body>
+			<main class="flex min-h-screen flex-col items-center">
+				<h1 class="text-5xl">Go + HTMX + Tailwind</h1>
+				<form class="" hx-post="/click" hx-target="#output">
+					<label for="method">Send To Server:</label>
+					<input class="border p-2" type="text" name="method"/>
+				</form>
+				<div id="output"></div>
+			</main>
+		</body>
+	</html>
+}
+
+templ Message(msg string) {
+	<p>{ msg }</p>
+}

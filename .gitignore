@@ -1,0 +1,5 @@
+bin/
+.env
+.air.toml
+view/assets/css/styles.css
+view/**/*.go
