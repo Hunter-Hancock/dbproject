@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+  app:
+    build: .
+    env_file: .env
+    ports:
+      - 3000:3000
+    command: ["sh", "-c", "chmod +x ./wait-for-db.sh && ./wait-for-db.sh && /dbproject/bin/migrate up && /dbproject/bin/dbproject"]
+    volumes:
+      - ./wait-for-db.sh:/wait-for-db.sh:ro  # Mount wait script as read-only
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${DBPASS}
+      - MSSQL_PID=developer
+    ports:
+      - 1433:1433
+    volumes:
+      - db-data:/var/lib/mssql/data
+
+volumes:
+  # Define volume for wait script if not already in your project
+  wait-for-db-script: {}
+  db-data: {}

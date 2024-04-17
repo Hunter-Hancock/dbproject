@@ -1,6 +1,7 @@
 package home 
 
 import "github.com/Hunter-Hancock/dbproject/db"
+import "fmt"
 
 templ IndexPage() {
 	<html lang="en">
@@ -12,8 +13,18 @@ templ IndexPage() {
 			<script src="/assets/js/htmx.min.js"></script>
 		</head>
 		<body>
-			<main class="flex min-h-screen flex-col items-center" hx-get="/products" hx-trigger="load" hx-target="#products">
-				<h1 class="text-5xl">Products</h1>
+			<header class="flex justify-end items-center w-full h-16 px-4 border-2">
+				<div class="mr-auto items-center gap-4">
+					<h1 class="text-2xl font-bold">Papa Georgios Pizza</h1>
+				</div>
+				<nav>
+					<ul class="flex gap-4">
+						<li>Home</li>
+						<li>Products</li>
+					</ul>
+				</nav>
+			</header>
+			<main class="" hx-get="/products" hx-trigger="load" hx-target="#products">
 				<div class="mt-10 grid grid-cols-1 gap-20 md:grid-cols-2 lg:grid-cols-6" id="products"></div>
 				<button hx-post="/click" hx-swap="noswap">Redirect Test</button>
 			</main>
@@ -26,9 +37,14 @@ templ Message(msg string) {
 }
 
 templ Products(products []db.FoodItem) {
-	<ul>
-		for _, product := range products {
-			<li>{product.Name}</li>
-		}
-	</ul>
+	<html lang="en">
+		<ul>
+			for _, product := range products {
+				<div class="flex flex-col gap-4 w-20 border border-2">
+					<h1>{ product.Name }</h1>	
+					<p>{ fmt.Sprintf("$%.2f", product.Price) }</p>
+				</div>
+			}
+		</ul>
+	</html>
 }

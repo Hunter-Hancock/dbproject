@@ -1,12 +1,15 @@
 package db
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
 
 type FoodItem struct {
 	ID            string
 	Name          string
 	Size          string
-	Quantity      float32
+	Quantity      int
 	Price         float32
 	SubcategoryID string
 }
@@ -34,7 +37,7 @@ func (f *SQLFoodStore) GetAll() ([]FoodItem, error) {
 	var items []FoodItem
 
 	for rows.Next() {
-		rows.Scan(&item.ID, &item.Name, &item.Size, &item.Quantity, &item.SubcategoryID, &item.Price)
+		rows.Scan(&item.ID, &item.Name, &item.Size, &item.Quantity, &item.Price, &item.SubcategoryID)
 		items = append(items, item)
 	}
 	return items, nil
