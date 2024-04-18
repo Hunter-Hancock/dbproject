@@ -1,10 +1,12 @@
 package handler
 
 import (
+	"io"
 	"net/http"
 
 	"github.com/Hunter-Hancock/dbproject/db"
 	"github.com/Hunter-Hancock/dbproject/view/home"
+	"github.com/go-chi/chi/v5"
 )
 
 type FoodHandler struct {
@@ -31,4 +33,10 @@ func (f *FoodHandler) HandleGetCategories(w http.ResponseWriter, r *http.Request
 	}
 
 	home.Categories(categories).Render(r.Context(), w)
+}
+
+func (f *FoodHandler) HandleGetCategory(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	io.WriteString(w, id)
 }

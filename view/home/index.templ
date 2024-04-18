@@ -4,12 +4,13 @@ import "github.com/Hunter-Hancock/dbproject/db"
 import "fmt"
 
 templ IndexPage() {
-	<html lang="en">
+	<html data-theme="light" lang="en">
 		<head>
 			<title>DB Project</title>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<link rel="stylesheet" href="/assets/css/styles.css"/>
+			<link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
 			<script src="/assets/js/htmx.min.js"></script>
 		</head>
 		<body>
@@ -50,8 +51,10 @@ templ Products(products []db.FoodItem) {
 
 templ Categories(categories []db.Category) {
 	for _, category := range categories {
-		<div class="flex flex-col justify-center items-center bg-red-500 w-32 h-32">
-			<h1 class="text-3xl">{ category.Name }</h1>
-		</div>
+		<a href={templ.URL(fmt.Sprintf("/category/%s", category.ID))} >
+			<div class="flex flex-col justify-center items-center bg-red-500 w-32 h-32 cursor-pointer">
+				<h1 class="text-3xl">{ category.Name }</h1>
+			</div>
+		</a>
 	}
 }

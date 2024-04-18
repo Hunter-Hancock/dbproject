@@ -27,6 +27,8 @@ func RegisterRoutes() *chi.Mux {
 		r.Get("/categories", app.FoodHandler.HandleGetCategories)
 	})
 
+	r.Get("/category/{id}", app.FoodHandler.HandleGetCategory)
+
 	fileServer := http.FileServer(http.FS(view.Files))
 	r.Handle("/*", fileServer)
 
