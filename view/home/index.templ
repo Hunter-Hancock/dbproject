@@ -8,7 +8,7 @@ templ IndexPage() {
 		<head>
 			<title>DB Project</title>
 			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<link rel="stylesheet" href="/assets/css/styles.css"/>
 			<script src="/assets/js/htmx.min.js"></script>
 		</head>
@@ -24,9 +24,8 @@ templ IndexPage() {
 					</ul>
 				</nav>
 			</header>
-			<main class="" hx-get="/products" hx-trigger="load" hx-target="#products">
+			<main class="flex flex-col items-center w-full min-h-screen" hx-get="/api/categories" hx-trigger="load" hx-target="#products">
 				<div class="mt-10 grid grid-cols-1 gap-20 md:grid-cols-2 lg:grid-cols-6" id="products"></div>
-				<button hx-post="/click" hx-swap="noswap">Redirect Test</button>
 			</main>
 		</body>
 	</html>
@@ -41,10 +40,18 @@ templ Products(products []db.FoodItem) {
 		<ul>
 			for _, product := range products {
 				<div class="flex flex-col gap-4 w-20 border border-2">
-					<h1>{ product.Name }</h1>	
+					<h1>{ product.Name }</h1>
 					<p>{ fmt.Sprintf("$%.2f", product.Price) }</p>
 				</div>
 			}
 		</ul>
 	</html>
+}
+
+templ Categories(categories []db.Category) {
+	for _, category := range categories {
+		<div class="flex flex-col justify-center items-center bg-red-500 w-32 h-32">
+			<h1 class="text-3xl">{ category.Name }</h1>
+		</div>
+	}
 }
