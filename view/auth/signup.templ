@@ -3,7 +3,7 @@ package auth
 templ SignUpPage() {
 	<html data-theme="light" lang="en">
 		<head>
-			<title>DB Project</title>
+			<title>Create Account</title>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<link rel="stylesheet" href="/assets/css/styles.css"/>
@@ -11,8 +11,9 @@ templ SignUpPage() {
 			<script src="/assets/js/htmx.min.js"></script>
 		</head>
 		<body>
-			<main class="flex justify-center items-center min-h-screen">
-				<form class="flex flex-col border border-2 gap-2 p-10 w-[400px]" hx-post="/api/signup">
+			<main class="flex flex-col justify-center items-center min-h-screen">
+				<h1>Create an Account</h1>
+				<form class="flex flex-col mt-auto border border-2 gap-2 w-[500px]" hx-post="/api/signup">
 					<label for="email">Email</label>
 					<input class="border" name="email" type="email"/>
 					<label for="password">Password</label>

@@ -4,24 +4,6 @@ import "fmt"
 import "github.com/Hunter-Hancock/dbproject/view/layout"
 import "github.com/Hunter-Hancock/dbproject/db"
 
-// templ Category(category *db.Category) {
-// 	<html data-theme="light" lang="en">
-// 		<head>
-// 			<title>Papa Georgios - { category.Name }</title>
-// 			<meta charset="UTF-8"/>
-// 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-// 			<link rel="stylesheet" href="/assets/css/styles.css"/>
-// 			<link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css"/>
-// 			<script src="/assets/js/htmx.min.js"></script>
-// 		</head>
-// 		<body>
-// 			@layout.Navbar()
-// 			<main class="flex flex-col items-center w-full min-h-screen" hx-get={ fmt.Sprintf("/api/products/%s", category.ID) } hx-trigger="load" hx-target="#products">
-// 				<div class="mt-10 grid grid-cols-1 gap-20 md:grid-cols-2 lg:grid-cols-6" id="products"></div>
-// 			</main>
-// 		</body>
-// 	</html>
-// }
 templ Category(category *db.Category) {
 	<head>
 		<title>Papa Georgios - { category.Name }</title>
@@ -35,23 +17,27 @@ templ Category(category *db.Category) {
 
 templ Products(products []db.FoodItem) {
 	@layout.Base() {
-		for _, product := range products {
-			<div class="flex flex-col gap-4 w-20 border border-2">
-				<h1>{ product.Name }</h1>
-				<p>{ fmt.Sprintf("$%.2f", product.Price) }</p>
-			</div>
-		}
+		<main class="flex flex-col items-center w-full min-h-screen">
+			for _, product := range products {
+				<div class="flex flex-col gap-4 w-20 border border-2">
+					<h1>{ product.Name }</h1>
+					<p>{ fmt.Sprintf("$%.2f", product.Price) }</p>
+				</div>
+			}
+		</main>
 	}
 }
 
 templ Subcategories(subcats []db.Subcategory) {
 	@layout.Base() {
-		for _, subcat := range subcats {
-			<a href={ templ.URL(fmt.Sprintf("/subcat/%s", subcat.ID)) }>
-				<div class="flex flex-col justify-center items-center bg-red-500 w-32 h-32 cursor-pointer">
-					<h1 class="text-3xl">{ subcat.Name }</h1>
-				</div>
-			</a>
-		}
+		<main class="flex flex-col items-center w-full min-h-screen">
+			for _, subcat := range subcats {
+				<a href={ templ.URL(fmt.Sprintf("/subcat/%s", subcat.ID)) }>
+					<div class="flex flex-col justify-center items-center bg-red-500 w-32 h-32 cursor-pointer">
+						<h1 class="text-3xl">{ subcat.Name }</h1>
+					</div>
+				</a>
+			}
+		</main>
 	}
 }

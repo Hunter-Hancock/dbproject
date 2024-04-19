@@ -30,7 +30,10 @@ templ Navbar() {
 					<a href="/">Home</a>
 				</li>
 				<li>Products</li>
-				<h1>{ mw.GetUserName(ctx) }</h1>
+				<li class="border px-4 py-2">
+					<a href="/signup">Sign Up</a>
+				</li>
+				<li>{ mw.GetUserName(ctx) }</li>
 			</ul>
 		</nav>
 	</header>

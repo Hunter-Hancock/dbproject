@@ -21,6 +21,5 @@ services:
       - db-data:/var/lib/mssql/data
 
 volumes:
-  # Define volume for wait script if not already in your project
   wait-for-db-script: {}
   db-data: {}

@@ -2,6 +2,7 @@ package mw
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 )
 
@@ -14,7 +15,14 @@ const UserIDKey contextKey = "UserID"
 func (mw *MiddleWare) RequireUser(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		ctx := context.WithValue(r.Context(), UserIDKey, "DOC")
+		test, err := r.Cookie("email")
+		if err != nil {
+			fmt.Println(err)
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		ctx := context.WithValue(r.Context(), UserIDKey, test.Value)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
@@ -24,5 +32,5 @@ func GetUserName(ctx context.Context) string {
 		return userName
 	}
 
-	return ""
+	return "Not Logged In"
 }

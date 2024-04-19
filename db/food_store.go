@@ -112,8 +112,6 @@ func (f *SQLFoodStore) GetCategory(name string) (*Category, error) {
 		rows.Scan(&category.ID, &category.Name)
 	}
 
-	fmt.Println(category)
-
 	return &category, nil
 }
 
@@ -124,8 +122,6 @@ func (f *SQLFoodStore) GetSubCategories(id string) ([]Subcategory, error) {
 		return nil, err
 	}
 
-	fmt.Printf("cat id: %s\n", id)
-
 	var subcategories []Subcategory
 
 	for rows.Next() {
@@ -133,8 +129,6 @@ func (f *SQLFoodStore) GetSubCategories(id string) ([]Subcategory, error) {
 		rows.Scan(&subcategory.ID, &subcategory.Name, &subcategory.CategoryID)
 		subcategories = append(subcategories, subcategory)
 	}
-
-	fmt.Println(subcategories)
 
 	return subcategories, err
 }
