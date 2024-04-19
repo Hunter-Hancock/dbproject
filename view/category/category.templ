@@ -34,14 +34,24 @@ templ Category(category *db.Category) {
 }
 
 templ Products(products []db.FoodItem) {
-	<html lang="en">
-		<ul>
-			for _, product := range products {
-				<div class="flex flex-col gap-4 w-20 border border-2">
-					<h1>{ product.Name }</h1>
-					<p>{ fmt.Sprintf("$%.2f", product.Price) }</p>
+	@layout.Base() {
+		for _, product := range products {
+			<div class="flex flex-col gap-4 w-20 border border-2">
+				<h1>{ product.Name }</h1>
+				<p>{ fmt.Sprintf("$%.2f", product.Price) }</p>
+			</div>
+		}
+	}
+}
+
+templ Subcategories(subcats []db.Subcategory) {
+	@layout.Base() {
+		for _, subcat := range subcats {
+			<a href={ templ.URL(fmt.Sprintf("/subcat/%s", subcat.ID)) }>
+				<div class="flex flex-col justify-center items-center bg-red-500 w-32 h-32 cursor-pointer">
+					<h1 class="text-3xl">{ subcat.Name }</h1>
 				</div>
-			}
-		</ul>
-	</html>
+			</a>
+		}
+	}
 }

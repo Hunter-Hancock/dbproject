@@ -28,13 +28,9 @@ func (f *FoodHandler) HandleGetAll(w http.ResponseWriter, r *http.Request) {
 }
 
 func (f *FoodHandler) HandleGetProductsBySubID(w http.ResponseWriter, r *http.Request) {
-	categoryId := chi.URLParam(r, "id")
-	subcategory, err := f.FoodStore.GetSubCategory(categoryId)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
-	}
+	subcatId := chi.URLParam(r, "id")
 
-	items, err := f.FoodStore.GetFoodItemsBySubID(subcategory.ID)
+	items, err := f.FoodStore.GetFoodItemsBySubID(subcatId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
@@ -65,5 +61,10 @@ func (f *FoodHandler) HandleGetCategory(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, err.Error(), http.StatusNotFound)
 	}
 
-	category.Category(c).Render(r.Context(), w)
+	subcats, err2 := f.FoodStore.GetSubCategories(c.ID)
+	if err2 != nil {
+		http.Error(w, err2.Error(), http.StatusNotFound)
+	}
+
+	category.Subcategories(subcats).Render(r.Context(), w)
 }

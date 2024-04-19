@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 )
 
 type FoodItem struct {
@@ -30,7 +31,7 @@ type FoodStore interface {
 
 	GetAllCategories() ([]Category, error)
 	GetCategory(name string) (*Category, error)
-	GetSubCategory(id string) (*Subcategory, error)
+	GetSubCategories(id string) ([]Subcategory, error)
 }
 
 type SQLFoodStore struct {
@@ -100,6 +101,7 @@ func (f *SQLFoodStore) GetCategory(name string) (*Category, error) {
 	query := "SELECT * FROM FOOD_CATEGORY WHERE CATEGORY_NAME = @Name"
 	rows, err := f.db.Query(query, sql.Named("Name", name))
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -110,21 +112,29 @@ func (f *SQLFoodStore) GetCategory(name string) (*Category, error) {
 		rows.Scan(&category.ID, &category.Name)
 	}
 
+	fmt.Println(category)
+
 	return &category, nil
 }
 
-func (f *SQLFoodStore) GetSubCategory(id string) (*Subcategory, error) {
+func (f *SQLFoodStore) GetSubCategories(id string) ([]Subcategory, error) {
 	query := "SELECT * FROM FOOD_SUBCATEGORY WHERE CATEGORY_ID = @ID"
 	rows, err := f.db.Query(query, sql.Named("ID", id))
 	if err != nil {
 		return nil, err
 	}
 
-	var subcategory Subcategory
+	fmt.Printf("cat id: %s\n", id)
+
+	var subcategories []Subcategory
 
 	for rows.Next() {
+		var subcategory Subcategory
 		rows.Scan(&subcategory.ID, &subcategory.Name, &subcategory.CategoryID)
+		subcategories = append(subcategories, subcategory)
 	}
 
-	return &subcategory, err
+	fmt.Println(subcategories)
+
+	return subcategories, err
 }
