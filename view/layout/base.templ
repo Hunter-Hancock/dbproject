@@ -1,0 +1,37 @@
+package layout
+
+import "github.com/Hunter-Hancock/dbproject/middleware"
+
+templ Base() {
+	<html data-theme="light" lang="en">
+		<head>
+			<title>DB Project</title>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<link rel="stylesheet" href="/assets/css/styles.css"/>
+			<link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css"/>
+			<script src="/assets/js/htmx.min.js"></script>
+		</head>
+		<body>
+			@Navbar()
+			{ children... }
+		</body>
+	</html>
+}
+
+templ Navbar() {
+	<header class="flex justify-end items-center w-full h-16 px-4 border-2">
+		<div class="mr-auto items-center gap-4">
+			<h1 class="text-2xl font-bold">Papa Georgios Pizza</h1>
+		</div>
+		<nav>
+			<ul class="flex gap-4">
+				<li>
+					<a href="/">Home</a>
+				</li>
+				<li>Products</li>
+				<h1>{ mw.GetUserName(ctx) }</h1>
+			</ul>
+		</nav>
+	</header>
+}

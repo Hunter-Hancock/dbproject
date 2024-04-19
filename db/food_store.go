@@ -18,10 +18,19 @@ type Category struct {
 	Name string
 }
 
+type Subcategory struct {
+	ID         string
+	Name       string
+	CategoryID string
+}
+
 type FoodStore interface {
 	GetAllFoodItems() ([]FoodItem, error)
+	GetFoodItemsBySubID(id string) ([]FoodItem, error)
 
 	GetAllCategories() ([]Category, error)
+	GetCategory(name string) (*Category, error)
+	GetSubCategory(id string) (*Subcategory, error)
 }
 
 type SQLFoodStore struct {
@@ -50,6 +59,24 @@ func (f *SQLFoodStore) GetAllFoodItems() ([]FoodItem, error) {
 	return items, nil
 }
 
+func (f *SQLFoodStore) GetFoodItemsBySubID(id string) ([]FoodItem, error) {
+	query := "SELECT * FROM FOOD_ITEM WHERE SUBCATEGORY_ID = @ID"
+	rows, err := f.db.Query(query, sql.Named("ID", id))
+	if err != nil {
+		return nil, err
+	}
+
+	var items []FoodItem
+
+	for rows.Next() {
+		var item FoodItem
+		rows.Scan(&item.ID, &item.Name, &item.Size, &item.Quantity, &item.Price, &item.SubcategoryID)
+		items = append(items, item)
+	}
+
+	return items, nil
+}
+
 func (f *SQLFoodStore) GetAllCategories() ([]Category, error) {
 	query := "SELECT * FROM FOOD_CATEGORY"
 	rows, err := f.db.Query(query)
@@ -67,4 +94,37 @@ func (f *SQLFoodStore) GetAllCategories() ([]Category, error) {
 	}
 
 	return categories, nil
+}
+
+func (f *SQLFoodStore) GetCategory(name string) (*Category, error) {
+	query := "SELECT * FROM FOOD_CATEGORY WHERE CATEGORY_NAME = @Name"
+	rows, err := f.db.Query(query, sql.Named("Name", name))
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var category Category
+
+	for rows.Next() {
+		rows.Scan(&category.ID, &category.Name)
+	}
+
+	return &category, nil
+}
+
+func (f *SQLFoodStore) GetSubCategory(id string) (*Subcategory, error) {
+	query := "SELECT * FROM FOOD_SUBCATEGORY WHERE CATEGORY_ID = @ID"
+	rows, err := f.db.Query(query, sql.Named("ID", id))
+	if err != nil {
+		return nil, err
+	}
+
+	var subcategory Subcategory
+
+	for rows.Next() {
+		rows.Scan(&subcategory.ID, &subcategory.Name, &subcategory.CategoryID)
+	}
+
+	return &subcategory, err
 }

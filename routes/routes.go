@@ -18,16 +18,18 @@ func RegisterRoutes() *chi.Mux {
 	}
 
 	r.Use(app.Middleware.RequireUser)
-	r.Get("/", app.TestHandler.Home)
-	r.Post("/click", app.TestHandler.Click)
+	r.Get("/", app.MyHandler.Home)
+
+	r.Get("/signup", app.AuthHandler.SigupPage)
 
 	r.Get("/products", app.FoodHandler.HandleGetAll)
 
 	r.Route("/api", func(r chi.Router) {
 		r.Get("/categories", app.FoodHandler.HandleGetCategories)
+		r.Get("/products/{id}", app.FoodHandler.HandleGetProductsBySubID)
 	})
 
-	r.Get("/category/{id}", app.FoodHandler.HandleGetCategory)
+	r.Get("/category/{name}", app.FoodHandler.HandleGetCategory)
 
 	fileServer := http.FileServer(http.FS(view.Files))
 	r.Handle("/*", fileServer)

@@ -1,0 +1,25 @@
+package auth
+
+templ SignUpPage() {
+	<html data-theme="light" lang="en">
+		<head>
+			<title>DB Project</title>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<link rel="stylesheet" href="/assets/css/styles.css"/>
+			<link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css"/>
+			<script src="/assets/js/htmx.min.js"></script>
+		</head>
+		<body>
+			<main class="flex justify-center items-center min-h-screen">
+				<form class="flex flex-col border border-2 gap-2 p-10 w-[400px]" hx-post="/api/signup">
+					<label for="email">Email</label>
+					<input class="border" name="email" type="email"/>
+					<label for="password">Password</label>
+					<input class="border" name="password" type="password"/>
+					<button class="border">Create Account</button>
+				</form>
+			</main>
+		</body>
+	</html>
+}

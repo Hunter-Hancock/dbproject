@@ -7,8 +7,8 @@ import (
 )
 
 type Application struct {
-	TestStore   db.TestStore
-	TestHandler *handler.TestHandler
+	MyHandler   *handler.Handler
+	AuthHandler *handler.AuthHandler
 	FoodStore   db.FoodStore
 	FoodHandler *handler.FoodHandler
 	Middleware  mw.MiddleWare
@@ -20,15 +20,16 @@ func NewApplication() (*Application, error) {
 		return nil, err
 	}
 
-	testStore := db.NewSQLTestStore(sql)
-	testHandler := handler.NewTestHandler(testStore)
+	authHandler := handler.NewAuthHandler()
+
+	h := handler.NewHandler()
 
 	foodStore := db.NewSQLFoodStore(sql)
 	foodHandler := handler.NewFoodHandler(foodStore)
 
 	app := &Application{
-		TestStore:   testStore,
-		TestHandler: testHandler,
+		MyHandler:   h,
+		AuthHandler: authHandler,
 		FoodStore:   foodStore,
 		FoodHandler: foodHandler,
 		Middleware:  mw.MiddleWare{},
