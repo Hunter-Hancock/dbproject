@@ -1,0 +1,18 @@
+package cart
+
+import "github.com/Hunter-Hancock/dbproject/view/layout"
+import "github.com/Hunter-Hancock/dbproject/db"
+import "fmt"
+
+templ CartPage(items []db.FoodItem) {
+	@layout.Base(true) {
+		<main class="flex flex-col items-center border-2">
+			for _, item := range items {
+				<div class="flex flex-col w-full border">
+					<h1>{ item.Name }</h1>
+					<p>{ fmt.Sprintf("%d", item.Quantity) }</p>
+				</div>
+			}
+		</main>
+	}
+}

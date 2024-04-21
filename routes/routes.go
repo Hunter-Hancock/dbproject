@@ -34,14 +34,21 @@ func RegisterRoutes() *chi.Mux {
 	r.Get("/", app.MyHandler.Home)
 
 	r.Get("/signup", app.AuthHandler.SigupPage)
+	r.Get("/login", app.AuthHandler.LoginPage)
 
 	r.Get("/products", app.FoodHandler.HandleGetAll)
+
+	r.Get("/cart", app.CartHandler.ShowCart)
 
 	r.Route("/api", func(r chi.Router) {
 		r.Get("/categories", app.FoodHandler.HandleGetCategories)
 		r.Get("/products/{id}", app.FoodHandler.HandleGetProductsBySubID)
 
+		r.Post("/cartadd/{id}", app.CartHandler.HandleAdd)
+		r.Get("/carttotal", app.CartHandler.HandleCartTotal)
+
 		r.Post("/signup", app.AuthHandler.Signup)
+		r.Post("/login", app.AuthHandler.Login)
 	})
 
 	r.Get("/category/{name}", app.FoodHandler.HandleGetCategory)

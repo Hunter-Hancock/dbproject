@@ -2,7 +2,7 @@ package layout
 
 import "github.com/Hunter-Hancock/dbproject/middleware"
 
-templ Base() {
+templ Base(nav bool) {
 	<html data-theme="light" lang="en">
 		<head>
 			<title>DB Project</title>
@@ -13,27 +13,38 @@ templ Base() {
 			<script src="/assets/js/htmx.min.js"></script>
 		</head>
 		<body>
-			@Navbar()
+			if nav {
+				@Navbar()
+			}
 			{ children... }
 		</body>
 	</html>
 }
 
 templ Navbar() {
-	<header class="flex justify-end items-center w-full h-16 px-4 border-2">
+	<header class="flex justify-end items-center w-full h-16 px-4 border-b-2">
 		<div class="mr-auto items-center gap-4">
 			<h1 class="text-2xl font-bold">Papa Georgios Pizza</h1>
 		</div>
 		<nav>
-			<ul class="flex gap-4">
+			<ul class="flex items-center gap-4">
 				<li>
 					<a href="/">Home</a>
 				</li>
 				<li>Products</li>
-				<li class="border px-4 py-2">
-					<a href="/signup">Sign Up</a>
-				</li>
-				<li>{ mw.GetUserName(ctx) }</li>
+				if mw.GetUser(ctx) != nil {
+					<li>{ mw.GetCustomer(mw.GetUser(ctx)).FirstName }</li>
+					<a class="border p-2" href="/cart">
+						<span hx-get="/api/carttotal" hx-trigger="load"></span>
+					</a>
+				} else {
+					<li class="border bg-green-400 rounded-sm px-4 py-2">
+						<a href="/login">Login</a>
+					</li>
+					<li class="border bg-red-400 rounded-sm px-4 py-2">
+						<a href="/signup">Sign Up</a>
+					</li>
+				}
 			</ul>
 		</nav>
 	</header>

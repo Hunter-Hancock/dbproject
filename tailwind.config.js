@@ -7,6 +7,6 @@ module.exports = {
   plugins: [],
 
   daisyui: {
-    themes: ["light", "dark"]
-  }
+    themes: ["light", "dark"],
+  },
 };

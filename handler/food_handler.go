@@ -66,5 +66,5 @@ func (f *FoodHandler) HandleGetCategory(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, err2.Error(), http.StatusNotFound)
 	}
 
-	category.Subcategories(subcats).Render(r.Context(), w)
+	category.Subcategories(name, subcats).Render(r.Context(), w)
 }

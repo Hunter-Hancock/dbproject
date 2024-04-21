@@ -4,26 +4,8 @@ import "github.com/Hunter-Hancock/dbproject/db"
 import "fmt"
 import "github.com/Hunter-Hancock/dbproject/view/layout"
 
-// templ IndexPage() {
-// 	<html data-theme="light" lang="en">
-// 		<head>
-// 			<title>DB Project</title>
-// 			<meta charset="UTF-8"/>
-// 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
-// 			<link rel="stylesheet" href="/assets/css/styles.css"/>
-// 			<link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css"/>
-// 			<script src="/assets/js/htmx.min.js"></script>
-// 		</head>
-// 		<body>
-// 			@layout.Navbar()
-// 			<main class="flex flex-col items-center w-full min-h-screen" hx-get="/api/categories" hx-trigger="load" hx-target="#products">
-// 				<div class="mt-10 grid grid-cols-1 gap-20 md:grid-cols-2 lg:grid-cols-6" id="products"></div>
-// 			</main>
-// 		</body>
-// 	</html>
-// }
 templ IndexPage() {
-	@layout.Base() {
+	@layout.Base(true) {
 		<main class="flex flex-col items-center w-full min-h-screen" hx-get="/api/categories" hx-trigger="load" hx-target="#products">
 			<div class="mt-10 grid grid-cols-1 gap-20 md:grid-cols-2 lg:grid-cols-6" id="products"></div>
 		</main>
