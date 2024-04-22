@@ -2,17 +2,82 @@ package cart
 
 import "github.com/Hunter-Hancock/dbproject/view/layout"
 import "github.com/Hunter-Hancock/dbproject/db"
+
 import "fmt"
 
 templ CartPage(items []db.FoodItem) {
 	@layout.Base(true) {
-		<main class="flex flex-col items-center border-2">
-			for _, item := range items {
-				<div class="flex flex-col w-full border">
-					<h1>{ item.Name }</h1>
-					<p>{ fmt.Sprintf("%d", item.Quantity) }</p>
+		<div class="grid md:grid-cols-2 gap-6 lg:gap-12 items-start max-w-6xl px-4 mx-auto py-6">
+			<div class="grid gap-6">
+				<div class="grid gap-4">
+					for _, item := range items {
+						<div class="grid sm:grid-cols-[100px_1fr] gap-4 items-center border p-6">
+							<img
+								src="/placeholder.svg"
+								alt="Product Image"
+								width="100"
+								height="100"
+								class="rounded-lg object-cover"
+								style="aspect-ratio: 100 / 100; object-fit: cover;"
+							/>
+							<div class="grid gap-1">
+								<h3 class="font-medium">{ item.Name }</h3>
+								<div class="flex items-center gap-2">
+									<div class="text-lg font-bold">{ fmt.Sprintf("$%.2f", item.Price) }</div>
+								</div>
+								<h3>{ fmt.Sprintf("Qty: %d", item.Quantity) }</h3>
+								<div class="flex items-center justify-end gap-2">
+									<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-red-500 hover:text-white hover:border-red-500 h-10 w-10">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="24"
+											height="24"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											class="h-4 w-4"
+										>
+											<path d="M3 6h18"></path>
+											<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+											<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+										</svg>
+										<span class="sr-only">Remove</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					}
 				</div>
-			}
-		</main>
+			</div>
+			<div class="grid gap-6">
+				<div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+					<div class="flex flex-col space-y-1.5 p-6">
+						<h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Order Summary</h3>
+					</div>
+					<div class="p-6 grid gap-4">
+						<div class="flex items-center justify-between">
+							<div>Subtotal</div>
+							<div class="font-medium">$119.98</div>
+						</div>
+						<div class="flex items-center justify-between">
+							<div>Shipping</div>
+							<div class="font-medium">$9.99</div>
+						</div>
+						<div class="flex items-center justify-between font-medium text-lg">
+							<div>Total</div>
+							<div>$129.97</div>
+						</div>
+					</div>
+					<div class="flex items-center p-6">
+						<button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-green-500 text-white hover:bg-green-600 h-11 rounded-md px-8 w-full">
+							Proceed to Checkout
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	}
 }

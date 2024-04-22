@@ -24,25 +24,28 @@ templ Base(nav bool) {
 templ Navbar() {
 	<header class="flex justify-end items-center w-full h-16 px-4 border-b-2">
 		<div class="mr-auto items-center gap-4">
-			<h1 class="text-2xl font-bold">Papa Georgios Pizza</h1>
+			<a href="/" class="text-2xl font-bold">Papa Georgios Pizza</a>
 		</div>
 		<nav>
 			<ul class="flex items-center gap-4">
-				<li>
-					<a href="/">Home</a>
-				</li>
-				<li>Products</li>
 				if mw.GetUser(ctx) != nil {
-					<li>{ mw.GetCustomer(mw.GetUser(ctx)).FirstName }</li>
-					<a class="border p-2" href="/cart">
-						<span hx-get="/api/carttotal" hx-trigger="load"></span>
-					</a>
-				} else {
-					<li class="border bg-green-400 rounded-sm px-4 py-2">
-						<a href="/login">Login</a>
+					<li>
+						<h2 class="font-semibold">Hi, { mw.GetCustomer(mw.GetUser(ctx)).FirstName }</h2>
 					</li>
-					<li class="border bg-red-400 rounded-sm px-4 py-2">
-						<a href="/signup">Sign Up</a>
+					<li>
+						<a class="border p-2" href="/cart">
+							<span hx-get="/api/carttotal" hx-trigger="load"></span>
+						</a>
+					</li>
+					<li>
+						<a href="/api/logout" class="border bg-red-400 rounded-sm px-4 py-2">Logout</a>
+					</li>
+				} else {
+					<li>
+						<a class="border bg-green-400 rounded-sm px-4 py-2" href="/login">Login</a>
+					</li>
+					<li>
+						<a class="border bg-red-400 rounded-sm px-4 py-2" href="/signup">Sign Up</a>
 					</li>
 				}
 			</ul>

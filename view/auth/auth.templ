@@ -5,8 +5,8 @@ import "github.com/Hunter-Hancock/dbproject/view/layout"
 templ SignUpPage() {
 	@layout.Base(false) {
 		<div class="flex justify-center items-center min-h-screen">
-			<div class="max-w-md w-full bg-base-300 pt-10 px-8 rounded-xl">
-				<h1 class="text-center text-2xl mb-10">Create Account</h1>
+			<div class="max-w-[800px] w-full bg-base-300 pt-10 px-8 rounded-xl">
+				<h1 class="font-semibold text-center text-2xl mb-10">Create Account</h1>
 				@SignUpForm()
 			</div>
 		</div>
@@ -15,34 +15,27 @@ templ SignUpPage() {
 
 templ SignUpForm() {
 	<form method="POST" action="/api/signup" class="space-y-4">
-		<div class="w-full">
-			<div class="label">
-				<span>First Name</span>
+		<div class="flex w-full gap-2 items-center">
+			<div class="w-1/2">
+				<label for="firstName" class="label">First Name</label>
+				<input name="firstName" required placeholder="John" class="input input-bordered w-full"/>
 			</div>
-			<input name="firstName" required placeholder="John" class="input input-bordered w-full"/>
-			<div class="label">
-				<span>Last Name</span>
+			<div class="w-1/2">
+				<label for="lastName" class="label">Last Name</label>
+				<input name="lastName" required placeholder="Smith" class="input input-bordered w-full"/>
 			</div>
-			<input name="lastName" required placeholder="Smith" class="input input-bordered w-full"/>
-		</div>
-		<div class="w-full"></div>
-		<div class="w-full">
-			<div class="label">
-				<span class="label-text">Email address</span>
-			</div>
-			<input type="email" name="email" autocomplete="off" required placeholder="Type here" class="input input-bordered w-full"/>
 		</div>
 		<div class="w-full">
-			<div class="label">
-				<span class="label-text">Password</span>
-			</div>
-			<input type="password" name="password" required autocomplete="off" class="input input-bordered w-full"/>
+			<label for="email" class="label">Email</label>
+			<input type="email" name="email" required placeholder="Type here" class="input input-bordered w-full"/>
 		</div>
 		<div class="w-full">
-			<div class="label">
-				<span class="label-text">Confirm Password</span>
-			</div>
-			<input type="password" name="confirmPassword" required autocomplete="off" class="input input-bordered w-full"/>
+			<label for="password" class="label">Password</label>
+			<input type="password" name="password" required class="input input-bordered w-full"/>
+		</div>
+		<div class="w-full">
+			<label for="confirmPassword" class="label">Confirmn Password</label>
+			<input type="password" name="confirmPassword" required class="input input-bordered w-full"/>
 		</div>
 		<button type="submit" class="btn btn-primary w-full">Sign Up</button>
 	</form>
@@ -56,13 +49,11 @@ templ LoginPage(formError *FormError) {
 	@layout.Base(false) {
 		<div class="flex flex-col justify-center items-center min-h-screen">
 			<div class="max-w-md w-full bg-base-300 pt-10 px-8 rounded-xl">
-				<h1 class="text-center text-2xl mb-10">Login</h1>
+				<h1 class="font-semibold text-center text-2xl mb-10">Login</h1>
 				@LoginForm()
 			</div>
 			if formError != nil {
-				<div>
-					<span class="text-3xl text-red-500">{ formError.Message }</span>
-				</div>
+				<span class="text-3xl text-red-500">{ formError.Message }</span>
 			}
 		</div>
 	}
@@ -71,17 +62,13 @@ templ LoginPage(formError *FormError) {
 templ LoginForm() {
 	<form method="POST" action="/api/login" class="space-y-4">
 		<div class="w-full">
-			<div class="label">
-				<span class="label-text">Email address</span>
-			</div>
+			<label for="email" class="label">Email</label>
 			<input type="email" name="email" autocomplete="off" required placeholder="Type here" class="input input-bordered w-full"/>
 		</div>
 		<div class="w-full">
-			<div class="label">
-				<span class="label-text">Password</span>
-			</div>
+			<label for="password" class="label">Password</label>
 			<input type="password" name="password" required autocomplete="off" class="input input-bordered w-full"/>
 		</div>
-		<button type="submit" class="btn btn-primary w-full">login <i class="fa-solid fa-arrow-right"></i></button>
+		<button type="submit" class="btn btn-primary w-full">login</button>
 	</form>
 }

@@ -49,6 +49,7 @@ func RegisterRoutes() *chi.Mux {
 
 		r.Post("/signup", app.AuthHandler.Signup)
 		r.Post("/login", app.AuthHandler.Login)
+		r.Get("/logout", app.AuthHandler.Logout)
 	})
 
 	r.Get("/category/{name}", app.FoodHandler.HandleGetCategory)

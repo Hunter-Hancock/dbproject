@@ -93,6 +93,18 @@ func (a *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	auth.LoginPage(formError).Render(r.Context(), w)
 }
 
+func (a *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
+	s, err := a.Session.GetAuthSession(r)
+	if err != nil {
+		return
+	}
+
+	s.Values[session.SessionAccessTokenKey] = ""
+	s.Save(r, w)
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
 func (a *AuthHandler) SigupPage(w http.ResponseWriter, r *http.Request) {
 	auth.SignUpPage().Render(r.Context(), w)
 }
