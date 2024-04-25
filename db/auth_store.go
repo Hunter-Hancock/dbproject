@@ -54,12 +54,12 @@ func (a *SQLAuthStore) CreateUser(user *User) error {
 }
 
 func (a *SQLAuthStore) CreateCustomer(user *User) error {
-	rid, _ := generateRandomString(2)
+	rid, _ := GenerateRandomString(2)
 	query := "INSERT INTO CLUB_CARD VALUES (@ID, 0)"
 
 	a.db.Exec(query, sql.Named("ID", rid))
 
-	rid2, _ := generateRandomString(2)
+	rid2, _ := GenerateRandomString(2)
 
 	user.Customer.ID = rid2
 	user.Customer.ClubCardID = rid
@@ -104,7 +104,7 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-func generateRandomString(length int) (string, error) {
+func GenerateRandomString(length int) (string, error) {
 	bytes := make([]byte, length/2)
 
 	_, err := rand.Read(bytes)

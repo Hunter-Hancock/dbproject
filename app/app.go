@@ -16,6 +16,8 @@ type Application struct {
 	FoodHandler    *handler.FoodHandler
 	CartHandler    *handler.CartHandler
 	CartStore      db.CartStore
+	OrderHandler   *handler.OrderHandler
+	OrderStore     db.OrderStore
 	Middleware     mw.MiddleWare
 	SessionManager *session.SessionManager
 }
@@ -41,15 +43,20 @@ func NewApplication() (*Application, error) {
 	foodStore := db.NewSQLFoodStore(sql)
 	foodHandler := handler.NewFoodHandler(foodStore)
 
+	orderStore := db.NewSQLOrderStore(sql)
+	orderHandler := handler.NewOrderHandler(orderStore, cartStore)
+
 	app := &Application{
-		MyHandler:   h,
-		AuthHandler: authHandler,
-		AuthStore:   authStore,
-		FoodStore:   foodStore,
-		FoodHandler: foodHandler,
-		CartHandler: cartHandler,
-		CartStore:   cartStore,
-		Middleware:  mw.MiddleWare{AuthStore: authStore, Session: sessionManager},
+		MyHandler:    h,
+		AuthHandler:  authHandler,
+		AuthStore:    authStore,
+		FoodStore:    foodStore,
+		FoodHandler:  foodHandler,
+		CartHandler:  cartHandler,
+		CartStore:    cartStore,
+		OrderHandler: orderHandler,
+		OrderStore:   orderStore,
+		Middleware:   mw.MiddleWare{AuthStore: authStore, Session: sessionManager},
 	}
 
 	return app, nil

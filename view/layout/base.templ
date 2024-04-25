@@ -22,10 +22,17 @@ templ Base(nav bool) {
 }
 
 templ Navbar() {
-	<header class="flex justify-end items-center w-full h-16 px-4 border-b-2">
+	<header class="flex justify-end items-center w-full h-20 px-4 border-b-2 bg-[#424845] text-white">
 		<div class="mr-auto items-center gap-4">
 			<a href="/" class="text-2xl font-bold">Papa Georgios Pizza</a>
 		</div>
+		<img
+			src="/assets/images/logo.jfif"
+			alt="Product Image"
+			width="70"
+			height="100"
+			class="mr-auto rounded-lg object-cover"
+		/>
 		<nav>
 			<ul class="flex items-center gap-4">
 				if mw.GetUser(ctx) != nil {
@@ -33,8 +40,9 @@ templ Navbar() {
 						<h2 class="font-semibold">Hi, { mw.GetCustomer(mw.GetUser(ctx)).FirstName }</h2>
 					</li>
 					<li>
-						<a class="border p-2" href="/cart">
-							<span hx-get="/api/carttotal" hx-trigger="load"></span>
+						<a class="border p-2 rounded-sm" href="/cart">
+							<span hx-get="/api/cartquantity" hx-trigger="load" hx-swap="beforeend">Cart: </span>
+							<span hx-get="/api/carttotal" hx-trigger="load" hx-swap="beforeend">$</span>
 						</a>
 					</li>
 					<li>

@@ -7,9 +7,11 @@ import (
 
 type CartStore interface {
 	Add(user *User, item string) error
+	Remove(user *User, id string) error
 
 	GetItems(id string) ([]FoodItem, error)
-	GetTotal(id string) (int, error)
+	GetCartQuantity(id string) (int, error)
+	GetCartTotal(id string) (float64, error)
 }
 
 type SQLCartStore struct {
@@ -53,12 +55,33 @@ func (s *SQLCartStore) Add(user *User, item string) error {
 
 }
 
-func (s *SQLCartStore) GetTotal(id string) (int, error) {
+func (s *SQLCartStore) Remove(user *User, id string) error {
+	query := "DELETE FROM CART WHERE CUSTOMER_ID = @ID AND FOOD_ITEM_ID = @FID"
+	_, err := s.db.Exec(query, sql.Named("ID", user.Customer.ID), sql.Named("FID", id))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return err
+}
+
+func (s *SQLCartStore) GetCartQuantity(id string) (int, error) {
 	var total int
 	query := "SELECT SUM(QUANTITY) AS TOTAL FROM CART WHERE CUSTOMER_ID = @ID"
 	row := s.db.QueryRow(query, sql.Named("ID", id))
 	if err := row.Scan(&total); err != nil {
 		return 0, err
+	}
+
+	return total, nil
+}
+
+func (s *SQLCartStore) GetCartTotal(id string) (float64, error) {
+	var total float64
+	query := "SELECT SUM(f.PRICE) AS TOTAL FROM CART c JOIN FOOD_ITEM f ON c.FOOD_ITEM_ID = f.FOOD_ITEM_ID WHERE CUSTOMER_ID = @ID"
+	row := s.db.QueryRow(query, sql.Named("ID", id))
+	if err := row.Scan(&total); err != nil {
+		return 0.00, err
 	}
 
 	return total, nil

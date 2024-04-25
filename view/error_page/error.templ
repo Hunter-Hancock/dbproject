@@ -1,0 +1,15 @@
+package error_page
+
+import "github.com/Hunter-Hancock/dbproject/view/layout"
+
+type PError struct {
+	Message string
+}
+
+templ ErrorPage(e PError) {
+	@layout.Base(true) {
+		<div class="flex flex-col justify-center items-center min-h-screen">
+			<h1 class="text-3xl text-red-500">{ e.Message }</h1>
+		</div>
+	}
+}

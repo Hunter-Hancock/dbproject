@@ -8,17 +8,21 @@ import "github.com/Hunter-Hancock/dbproject/middleware"
 templ Products(products []db.FoodItem) {
 	@layout.Base(true) {
 		<main class="flex flex-col items-center w-full min-h-screen">
-			for _, product := range products {
-				<div class="flex flex-col gap-4 w-20 border border-2">
-					<h1>{ product.Name }</h1>
-					<p>{ fmt.Sprintf("$%.2f", product.Price) }</p>
-					if mw.GetUser(ctx) != nil {
-						<button hx-post={ fmt.Sprintf("/api/cartadd/%s", product.ID) } data-productid={ product.ID }>Add To Cart</button>
-					} else {
-						<h2>Login To Order</h2>
-					}
-				</div>
-			}
+			<div class="mt-10 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-20" id="products">
+				for _, product := range products {
+					<div class="flex flex-col justify-between items-center w-96 h-[300px] border rounded-md shadow-lg hover:scale-110 transition-all">
+						<h1 class="my-auto text-2xl">{ product.Name }</h1>
+						<div class="w-full flex justify-between items-center px-2 pb-2">
+							<p class="font-semibold">{ fmt.Sprintf("$%.2f", product.Price) }</p>
+							if mw.GetUser(ctx) != nil {
+								<button class="border bg-green-400 rounded-sm px-4 py-2" href="/login" hx-post={ fmt.Sprintf("/api/cartadd/%s", product.ID) }>Add To Cart</button>
+							} else {
+								<a class="border p-2 cursor-pointer" href="/login">Login To Order</a>
+							}
+						</div>
+					</div>
+				}
+			</div>
 		</main>
 	}
 }
@@ -29,13 +33,15 @@ templ Subcategories(name string, subcats []db.Subcategory) {
 	</head>
 	@layout.Base(true) {
 		<main class="flex flex-col items-center w-full min-h-screen">
-			for _, subcat := range subcats {
-				<a href={ templ.URL(fmt.Sprintf("/subcat/%s", subcat.ID)) }>
-					<div class="flex flex-col justify-center items-center bg-red-500 w-32 h-32 cursor-pointer">
-						<h1 class="text-3xl">{ subcat.Name }</h1>
-					</div>
-				</a>
-			}
+			<div class="mt-10 grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-20" id="products">
+				for _, subcat := range subcats {
+					<a href={ templ.URL(fmt.Sprintf("/subcat/%s", subcat.ID)) }>
+						<div class="flex flex-col justify-center items-center w-96 h-[300px] border rounded-md shadow-lg cursor-pointer hover:scale-110 transition-all">
+							<h1 class="text-3xl">{ subcat.Name }</h1>
+						</div>
+					</a>
+				}
+			</div>
 		</main>
 	}
 }

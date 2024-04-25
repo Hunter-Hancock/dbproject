@@ -38,14 +38,25 @@ func RegisterRoutes() *chi.Mux {
 
 	r.Get("/products", app.FoodHandler.HandleGetAll)
 
-	r.Get("/cart", app.CartHandler.ShowCart)
+	r.Group(func(r chi.Router) {
+		r.Use(app.Middleware.WithAuth)
+		r.Get("/cart", app.CartHandler.ShowCart)
+		r.Get("/checkout", app.OrderHandler.HandleShow)
+		r.Get("/orders", app.OrderHandler.ShowOrders)
+	})
+
+	r.Get("/error", app.MyHandler.ErrorPage)
 
 	r.Route("/api", func(r chi.Router) {
 		r.Get("/categories", app.FoodHandler.HandleGetCategories)
 		r.Get("/products/{id}", app.FoodHandler.HandleGetProductsBySubID)
 
 		r.Post("/cartadd/{id}", app.CartHandler.HandleAdd)
+		r.Post("/cartremove/{id}", app.CartHandler.HandleRemove)
+		r.Get("/cartquantity", app.CartHandler.HandleCartQuantity)
 		r.Get("/carttotal", app.CartHandler.HandleCartTotal)
+
+		r.Post("/processPayment", app.OrderHandler.HandleProcessPayment)
 
 		r.Post("/signup", app.AuthHandler.Signup)
 		r.Post("/login", app.AuthHandler.Login)

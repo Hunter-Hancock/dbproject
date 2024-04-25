@@ -1,11 +1,12 @@
 package handler
 
 import (
-	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/Hunter-Hancock/dbproject/db"
 	"github.com/Hunter-Hancock/dbproject/view/category"
+	"github.com/Hunter-Hancock/dbproject/view/error_page"
 	"github.com/Hunter-Hancock/dbproject/view/home"
 	"github.com/go-chi/chi/v5"
 )
@@ -44,13 +45,7 @@ func (f *FoodHandler) HandleGetCategories(w http.ResponseWriter, r *http.Request
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
-	type contextKey string
-
-	var userContextKey contextKey = "userID"
-
-	ctx := context.WithValue(context.Background(), userContextKey, "DOC")
-
-	home.Categories(categories).Render(ctx, w)
+	home.Categories(categories).Render(r.Context(), w)
 }
 
 func (f *FoodHandler) HandleGetCategory(w http.ResponseWriter, r *http.Request) {
@@ -59,6 +54,14 @@ func (f *FoodHandler) HandleGetCategory(w http.ResponseWriter, r *http.Request) 
 	c, err := f.FoodStore.GetCategory(name)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusNotFound)
+	}
+
+	e := error_page.PError{
+		Message: "Category Not Found",
+	}
+
+	if c.Name == "" {
+		http.Redirect(w, r, fmt.Sprintf("/error?error=%s", e.Message), http.StatusSeeOther)
 	}
 
 	subcats, err2 := f.FoodStore.GetSubCategories(c.ID)

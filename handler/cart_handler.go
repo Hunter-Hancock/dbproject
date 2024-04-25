@@ -28,9 +28,31 @@ func (ch *CartHandler) HandleAdd(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err2)
 	}
 
-	message := fmt.Sprintf("Added to cart: %s item: %s", user.Customer.FirstName, id)
+	io.WriteString(w, "Added to Cart!")
+}
 
-	io.WriteString(w, message)
+func (ch *CartHandler) HandleRemove(w http.ResponseWriter, r *http.Request) {
+	user := r.Context().Value(mw.UserIDKey).(*db.User)
+
+	id := chi.URLParam(r, "id")
+	if err := ch.CartStore.Remove(user, id); err != nil {
+		fmt.Println(err)
+	}
+
+}
+
+func (ch *CartHandler) HandleCartQuantity(w http.ResponseWriter, r *http.Request) {
+	user, ok := r.Context().Value(mw.UserIDKey).(*db.User)
+	if !ok {
+		return
+	}
+
+	quantity, err := ch.CartStore.GetCartQuantity(user.Customer.ID)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	io.WriteString(w, fmt.Sprintf("%d", quantity))
 }
 
 func (ch *CartHandler) HandleCartTotal(w http.ResponseWriter, r *http.Request) {
@@ -39,12 +61,12 @@ func (ch *CartHandler) HandleCartTotal(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	total, err := ch.CartStore.GetTotal(user.Customer.ID)
+	total, err := ch.CartStore.GetCartTotal(user.Customer.ID)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	io.WriteString(w, fmt.Sprintf("Cart: %d", total))
+	io.WriteString(w, fmt.Sprintf("%.2f", total))
 }
 
 func (ch *CartHandler) ShowCart(w http.ResponseWriter, r *http.Request) {

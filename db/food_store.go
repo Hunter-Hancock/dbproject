@@ -10,7 +10,7 @@ type FoodItem struct {
 	Name          string
 	Size          string
 	Quantity      int
-	Price         float32
+	Price         float64
 	SubcategoryID string
 }
 

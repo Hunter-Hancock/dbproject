@@ -37,6 +37,19 @@ func (mw *MiddleWare) RequireUser(next http.Handler) http.Handler {
 	})
 }
 
+func (mw *MiddleWare) WithAuth(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		user := GetUser(r.Context())
+		if user == nil {
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
+			return
+		}
+		next.ServeHTTP(w, r)
+	}
+
+	return http.HandlerFunc(fn)
+}
+
 func GetUser(ctx context.Context) *db.User {
 	if user, ok := ctx.Value(UserIDKey).(*db.User); ok {
 

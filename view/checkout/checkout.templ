@@ -1,0 +1,23 @@
+package checkout
+
+import "github.com/Hunter-Hancock/dbproject/db"
+import "github.com/Hunter-Hancock/dbproject/view/layout"
+
+templ CheckoutPage(methods []db.PaymentMethod) {
+	@layout.Base(true) {
+		<div class="flex flex-col justify-center items-center">
+			<form id="paymentForm" action="/api/processPayment" method="post">
+				@PaymentMethods(methods)
+				<button class="border bg-green-400 rounded-sm px-4 py-2">Pay</button>
+			</form>
+		</div>
+	}
+}
+
+templ PaymentMethods(methods []db.PaymentMethod) {
+	for _, method := range methods {
+		<label for="paymentMethod">{ method.Name }</label>
+		<input type="radio" name="paymentMethod" value={ method.ID }/>
+		<br/>
+	}
+}
