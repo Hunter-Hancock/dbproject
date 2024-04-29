@@ -24,6 +24,7 @@ templ Base(nav bool) {
 templ Navbar() {
 	<header class="flex justify-end items-center w-full h-20 px-4 border-b-2 bg-[#424845] text-white">
 		<div class="mr-auto items-center gap-4">
+
 			<a href="/" class="text-2xl font-bold">Papa Georgios Pizza</a>
 		</div>
 		<img
@@ -36,6 +37,11 @@ templ Navbar() {
 		<nav>
 			<ul class="flex items-center gap-4">
 				if mw.GetUser(ctx) != nil {
+					<li>
+						<a class="border p-2 rounded-sm" href="/orders">
+							<span>Orders</span>
+						</a>
+					</li>
 					<li>
 						<h2 class="font-semibold">Hi, { mw.GetCustomer(mw.GetUser(ctx)).FirstName }</h2>
 					</li>

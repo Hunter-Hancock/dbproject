@@ -34,14 +34,15 @@ type OrderDetail struct {
 	PromotionID string
 	OrderTotal  float64
 	Tip         float64
+	OrderTime   time.Time
 }
 
 type OrderStore interface {
 	CreateOrder(id, pid string) (Order, error)
 	CreateDetail(id string, items []FoodItem) (OrderDetail, error)
 
-	GetOrderID(id string) (string, error)
-	GetOrderDetail(id string) ([]*OrderDetail, error)
+	GetOrders(id string) ([]Order, error)
+	GetOrderDetail(id []Order) ([]*OrderDetail, error)
 
 	GetFoodByID(id string) (*FoodItem, error)
 	GetPaymentMethods() ([]PaymentMethod, error)
@@ -117,30 +118,41 @@ func (o *SQLOrderStore) CreateDetail(orderID string, items []FoodItem) (OrderDet
 	return order, nil
 }
 
-func (o *SQLOrderStore) GetOrderID(id string) (string, error) {
-	query := "SELECT ORDER_ID FROM ORDERS WHERE CUSTOMER_ID = @ID"
-	var oid string
-	err := o.db.QueryRow(query, sql.Named("ID", id)).Scan(&oid)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	return oid, nil
-}
-
-func (o *SQLOrderStore) GetOrderDetail(id string) ([]*OrderDetail, error) {
-	query := "SELECT ORDER_DETAIL_ID, QUANTITY, FOOD_ITEM_ID, ORDER_ID, ORDER_TOTAL FROM ORDER_DETAIL WHERE ORDER_ID = @ID"
+func (o *SQLOrderStore) GetOrders(id string) ([]Order, error) {
+	query := "SELECT ORDER_ID, ORDER_DATETIME FROM ORDERS WHERE CUSTOMER_ID = @ID"
 	rows, err := o.db.Query(query, sql.Named("ID", id))
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	var orders []*OrderDetail
+	var orders []Order
 
 	for rows.Next() {
-		var order OrderDetail
-		rows.Scan(&order.ID, &order.Quantity, &order.ItemID, &order.OrderID, &order.OrderTotal)
-		orders = append(orders, &order)
+		var order Order
+		rows.Scan(&order.ID, &order.OrderTime)
+		orders = append(orders, order)
+	}
+
+	return orders, nil
+}
+
+func (o *SQLOrderStore) GetOrderDetail(ods []Order) ([]*OrderDetail, error) {
+	var orders []*OrderDetail
+
+	for _, od := range ods {
+
+		query := "SELECT ORDER_DETAIL_ID, QUANTITY, FOOD_ITEM_ID, ORDER_ID, ORDER_TOTAL FROM ORDER_DETAIL WHERE ORDER_ID = @ID"
+		rows, err := o.db.Query(query, sql.Named("ID", od.ID))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		for rows.Next() {
+			var order OrderDetail
+			rows.Scan(&order.ID, &order.Quantity, &order.ItemID, &order.OrderID, &order.OrderTotal)
+			order.OrderTime = od.OrderTime
+			orders = append(orders, &order)
+		}
 	}
 
 	return orders, nil

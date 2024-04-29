@@ -2,15 +2,22 @@ package order
 
 import "github.com/Hunter-Hancock/dbproject/view/layout"
 import "github.com/Hunter-Hancock/dbproject/db"
+import "fmt"
 
 templ OrdersPage(orders []*db.OrderDetail) {
 	@layout.Base(true) {
 		<main class="flex flex-col items-center w-full min-h-screen">
-			for _, order := range orders {
-				<div class="flex flex-col justify-center items-center w-96 h-[300px] border rounded-md shadow-lg cursor-pointer hover:scale-110 transition-all">
-					<h1 class="text-3xl">{ order.Item.Name }</h1>
-				</div>
-			}
+			<div class="flex flex-col mt-10 gap-20">
+				for _, order := range orders {
+					<div class="flex flex-col justify-between items-center w-[600px] h-[200px] border rounded-md shadow-lg cursor-pointer hover:scale-110 transition-all">
+						<h1 class="text-3xl">Order Number: { order.ID}</h1>
+						<h1 class="text-2xl my-auto">Order Total: { fmt.Sprintf("$%.2f", order.OrderTotal) }</h1>
+						<div class="flex flex-end">
+							<span>{fmt.Sprintf("%s", order.OrderTime)}</span>
+						</div>
+					</div>
+				}
+			</div>
 		</main>
 	}
 }

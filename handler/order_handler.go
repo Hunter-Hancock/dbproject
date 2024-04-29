@@ -28,12 +28,12 @@ func (oh *OrderHandler) HandleShow(w http.ResponseWriter, r *http.Request) {
 
 func (oh *OrderHandler) ShowOrders(w http.ResponseWriter, r *http.Request) {
 	user := r.Context().Value(mw.UserIDKey).(*db.User)
-	orderID, err := oh.OrderStore.GetOrderID(user.Customer.ID)
+	orderIDs, err := oh.OrderStore.GetOrders(user.Customer.ID)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	orders, err2 := oh.OrderStore.GetOrderDetail(orderID)
+	orders, err2 := oh.OrderStore.GetOrderDetail(orderIDs)
 	if err2 != nil {
 		fmt.Println(err2)
 	}
